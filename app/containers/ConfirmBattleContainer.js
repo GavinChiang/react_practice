@@ -1,51 +1,42 @@
 var React = require('react');
-var ConfirmBattle = require('../components/ConfirmBattle.js');
-var githubhelpers = require('../utils/githubhelpers')	
-
+var ConfirmBattle = require('../components/ConfirmBattle');
+var githubHelpers = require('../utils/githubHelpers');
 
 var ConfirmBattleContainer = React.createClass({
-	contextType: {
+	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
-
 	getInitialState: function() {
 		return{
-			isloading: true,
-			playerInfo: [],
+			isLoading: true,
+			playersInfo: [],
 		}
 	},
-
-	componentWillMount: function() {
-		console.log("componentWillMount")
-	},
-
 	componentDidMount: function () {
 		var query = this.props.location.query;
-		// console.log("componentDidMount")
-		//fetch info from github
-		githubhelpers.getPlayersInfo([query.playerOne, query.playerTwo])
+		githubHelpers.getPlayersInfo([query.playerOne, query.playerTwo])
 			.then(function (players){
 				this.setState({
-					isloading: false,
+					isLoading: false,
 					playersInfo: [players[0], players[1]]
 				})
 			}.bind(this))
 	},
-
-	componentWillReceiveProps: function() {
-		console.log("componentWillReceiveProps")
+	handleInitiateBattle: function () {
+		this.context.router.push({
+			pathname: '/results',
+			state: {
+				playersInfo: this.state.playersInfo
+			}
+		})
 	},
-
-	componentWillUmnount: function(){
-		console.log("componentWillUmnount")
-	},
-
-	render: function() {
+	render: function () {
 		return (
 			<ConfirmBattle 
-				isloading={this.state.isloading} 
-				playerInfo={this.state.playersInfo} />
-		);
+				isLoading={this.state.isLoading}
+				onInitiateBattle={this.handleInitiateBattle}
+				playersInfo={this.state.playersInfo} />
+		)
 	}
 });
 
