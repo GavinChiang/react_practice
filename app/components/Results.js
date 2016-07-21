@@ -5,6 +5,8 @@ var UserDetailsWrapper = require('./UserDetailsWrapper');
 var UserDetails = require('./UserDetails');
 var Link = require('react-router').Link;
 var MainContainer = require('./MainContainer');
+var Loading = require('./Loading');
+
 function StartOver () {
 	return(
 			<div className='col-sm-12' style={styles.space} >
@@ -21,7 +23,7 @@ function Results (props) {
 
 	if(props.isLoading === true) {
 		return (
-			<p> LOADING</p>
+			<Loading text='one monment' speed={100} />
 		)
 	}
 	
